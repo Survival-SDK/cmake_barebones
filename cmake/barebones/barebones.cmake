@@ -1,0 +1,15 @@
+list(APPEND CMAKE_MODULE_PATH ${BB_MODULE_PATH}/barebones/packages)
+
+if (NOT CMAKE_SYSTEM_NAME)
+    set(CMAKE_SYSTEM_NAME ${CMAKE_HOST_SYSTEM_NAME})
+endif()
+
+include(barebones/options)
+include(barebones/flag_availability)
+include(barebones/compile_options)
+include(barebones/warnings)
+include(barebones/platform/windows)
+include(barebones/build_type_coverage)
+include(barebones/build_type_lint)
+include(barebones/target)
+include(barebones/install)
