@@ -24,6 +24,7 @@ function(bb_add_library)
         if (NOT ${_COUNTER} EQUAL 0)
             list(APPEND _SOURCES ${_UNPARSED})
         endif()
+        math(EXPR _COUNTER "${_COUNTER} + 1")
     endforeach()
 
     if (NOT _SOURCES AND NOT _BB_ADD_LIBRARY_OBJLIB)
