@@ -37,6 +37,46 @@ function(bb_add_library)
     else()
         add_library(${_TARGET} ${_TYPE} ${_SOURCES})
     endif()
+
+    if(BB_HAVE_LTO AND CMAKE_BUILD_TYPE STREQUAL "Release")
+        set_target_properties(${_TARGET} PROPERTIES
+            INTERPROCEDURAL_OPTIMIZATION TRUE
+        )
+    endif()
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Lint")
+        set_target_properties(${_TARGET} PROPERTIES C_CLANG_TIDY
+            "clang-tidy;--checks=${BB_CLANG_TIDY_C_CHECKS}")
+        set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
+            "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
+        set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
+        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE iwyu)
+    endif()
+endfunction()
+
+# bb_add_library(<target> [src1[ src2[ ...]]])
+function(bb_add_executable)
+    list(GET ARGV 0 _TARGET)
+
+    set(_COUNTER 0)
+    foreach(_ARG IN LISTS ARGV)
+        if (NOT ${_COUNTER} EQUAL 0)
+            list(APPEND _SOURCES ${_ARG})
+        endif()
+        math(EXPR _COUNTER "${_COUNTER} + 1")
+    endforeach()
+
+    if (NOT _SOURCES)
+        file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "static int unused;\n")
+        list(APPEND _SOURCES "${CMAKE_BINARY_DIR}/dummy.c")
+    endif()
+
+    if(BB_HAVE_LTO AND CMAKE_BUILD_TYPE STREQUAL "Release")
+        set_target_properties(${_TARGET} PROPERTIES
+            INTERPROCEDURAL_OPTIMIZATION TRUE
+        )
+    endif()
+
     if (CMAKE_BUILD_TYPE STREQUAL "Lint")
         set_target_properties(${_TARGET} PROPERTIES C_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_C_CHECKS}")
