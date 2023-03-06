@@ -1,3 +1,8 @@
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT BB_HAVE_LTO)
+endif()
+
 # bb_add_library(<target> {STATIC|SHARED|OBJECT} [OBJLIB <objlib>] [src1[ src2[ ...]]])
 function(bb_add_library)
     set(options STATIC SHARED OBJECT)
