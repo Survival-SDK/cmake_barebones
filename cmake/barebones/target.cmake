@@ -27,11 +27,6 @@ function(bb_add_library)
         math(EXPR _COUNTER "${_COUNTER} + 1")
     endforeach()
 
-    if (NOT _SOURCES AND NOT _BB_ADD_LIBRARY_OBJLIB)
-        file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "static int unused;\n")
-        list(APPEND _SOURCES "${CMAKE_BINARY_DIR}/dummy.c")
-    endif()
-
     if (_BB_ADD_LIBRARY_OBJLIB)
         add_library(${_TARGET} ${_TYPE} $<TARGET_OBJECTS:${_BB_ADD_LIBRARY_OBJLIB}> ${_SOURCES})
     else()
@@ -66,10 +61,7 @@ function(bb_add_executable)
         math(EXPR _COUNTER "${_COUNTER} + 1")
     endforeach()
 
-    if (NOT _SOURCES)
-        file(WRITE "${CMAKE_BINARY_DIR}/dummy.c" "static int unused;\n")
-        list(APPEND _SOURCES "${CMAKE_BINARY_DIR}/dummy.c")
-    endif()
+    add_executable(${_TARGET} ${_SOURCES})
 
     if(BB_HAVE_LTO AND CMAKE_BUILD_TYPE STREQUAL "Release")
         set_target_properties(${_TARGET} PROPERTIES
