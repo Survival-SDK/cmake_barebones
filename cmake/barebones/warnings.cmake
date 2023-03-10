@@ -1470,9 +1470,9 @@ endfunction()
 
 # bb_add_more_warnings(LANG {C|C++} CATEGORIES <option1>[ <option2> [...]] OPTIONS <compiler_options_var>)
 # Common options:
-#   asciiz
 #   alloc
 #   array
+#   asciiz
 #   basic
 #   cuda
 #   documentation
