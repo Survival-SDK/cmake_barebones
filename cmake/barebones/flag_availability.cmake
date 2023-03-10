@@ -26,7 +26,7 @@ function(bb_process_flag_availability)
 
     if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
         message(STATUS
-            "Check if ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
+            "Checking for ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
     endif()
 
     file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
@@ -53,7 +53,7 @@ function(bb_process_flag_availability)
     if (${_BB_HAVE_FLAG})
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+                "Checking for ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
         endif()
         if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Lint)
             set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
@@ -62,7 +62,7 @@ function(bb_process_flag_availability)
     else()
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+                "Checking for ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
         endif()
         set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
             ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
@@ -75,7 +75,7 @@ function(bb_process_flag_availability)
 
     if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
         message(STATUS
-            "Check if clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
+            "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
     endif()
     file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
     execute_process(
@@ -89,14 +89,14 @@ function(bb_process_flag_availability)
     if (${BB_EXECUTE_RESULT} EQUAL 0)
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+                "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
         endif()
         # set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
         #     CACHE STRING "")
     else()
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+                "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
         endif()
         set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
             ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
@@ -105,7 +105,7 @@ function(bb_process_flag_availability)
 
     if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
         message(STATUS
-            "Check if include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
+            "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
     endif()
     file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
     execute_process(
@@ -129,14 +129,14 @@ function(bb_process_flag_availability)
     if (${_BB_HAVE_FLAG})
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+                "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
         endif()
         set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
             CACHE STRING "")
     else()
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Check if include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+                "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
         endif()
         set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
             ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
