@@ -4,27 +4,35 @@ function (bb_add_compile_options)
 
     cmake_parse_arguments(_BB_ADD_COMPILE_OPTIONS "" "${oneValueArgs}" "" ${ARGN})
 
-    if (_BB_ADD_COMPILE_OPTIONS_LANG STREQUAL C
-        AND (CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang)
-        OR _BB_ADD_COMPILE_OPTIONS_LANG STREQUAL C++
-        AND (CMAKE_CXX_COMPILER_ID STREQUAL GNU OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-    )
-        bb_process_common_flag_availability(BB_FMAX_ERRORS_100 "-fmax-errors=100" "" BB_QUIET)
+    if (NOT ${_BB_ADD_COMPILE_OPTIONS_LANG} STREQUAL C
+        AND NOT ${_BB_ADD_COMPILE_OPTIONS_LANG} STREQUAL C++)
+        return()
+    endif()
 
-        bb_process_common_flag_availability(BB_FMAX_ERRORS_100
-            "-fmax-errors=100" ""
+    if (${CMAKE_C_COMPILER_ID} STREQUAL GNU
+        OR ${CMAKE_C_COMPILER_ID} STREQUAL Clang
+    )
+        bb_process_common_flag_availability(
+            FLAG -fmax-errors=100
+            FALLBACK ""
+            OPTION BB_FMAX_ERRORS_100
         )
 
         set(
             ${_BB_ADD_COMPILE_OPTIONS_OPTIONS}
-            "${${_BB_ADD_COMPILE_OPTIONS_OPTIONS}};-Wall -Wextra -Wshadow
+            "${${_BB_ADD_COMPILE_OPTIONS_OPTIONS}};-Wextra -Wshadow
             -Wunused-result -Wno-unused-parameter -Wno-sign-conversion
             ${BB_FMAX_ERRORS_100}"
             PARENT_SCOPE
         )
-        if(${BB_WERROR})
-            set(${_BB_ADD_COMPILE_OPTIONS_OPTIONS}
-                "${${_BB_ADD_COMPILE_OPTIONS_OPTIONS}};-Werror" PARENT_SCOPE)
-        endif()
+    endif()
+
+    set(
+        ${_BB_ADD_COMPILE_OPTIONS_OPTIONS}
+        "${${_BB_ADD_COMPILE_OPTIONS_OPTIONS}};-Wall" PARENT_SCOPE
+    )
+    if(${BB_WERROR})
+        set(${_BB_ADD_COMPILE_OPTIONS_OPTIONS}
+            "${${_BB_ADD_COMPILE_OPTIONS_OPTIONS}};-Werror" PARENT_SCOPE)
     endif()
 endfunction()
