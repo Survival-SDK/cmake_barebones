@@ -19,7 +19,7 @@ function(bb_process_flag_availability)
     if (_BB_PROCESS_FLAG_AVAILABILITY_LANG STREQUAL C)
         set(_BB_COMPILER ${CMAKE_C_COMPILER})
         set(_BB_FILENAME "${CMAKE_BINARY_DIR}/trycompile.c")
-    elseif (BB_LANG STREQUAL C++)
+    elseif (_BB_PROCESS_FLAG_AVAILABILITY_LANG STREQUAL C++)
         set(_BB_COMPILER ${CMAKE_CXX_COMPILER})
         set(_BB_FILENAME "${CMAKE_BINARY_DIR}/trycompile.cpp")
     endif()
@@ -41,7 +41,7 @@ function(bb_process_flag_availability)
     )
 
     set(_BB_HAVE_FLAG OFF)
-    if (BB_EXECUTE_RESULT EQUAL 0) # exitcode 0 - gcc success or
+    if (${BB_EXECUTE_RESULT} EQUAL 0) # exitcode 0 - gcc success or
                                    # Clang/TCC warning
         string(REGEX MATCH "warning: unsupported option|unknown warning option"
             _REGEX_MATCH_UNSUPPORTED "${BB_EXECUTE_ERROR}")
