@@ -29,8 +29,9 @@ function(bb_process_flag_availability)
             "Checking for ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
     endif()
 
-    file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
     string(REPLACE " " ";" BB_FLAG_LIST ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG})
+
+    file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
     execute_process(
         COMMAND ${_BB_COMPILER} ${CMAKE_C_FLAGS} ${BB_FLAG_LIST} -c
          ${_BB_FILENAME}
@@ -39,6 +40,7 @@ function(bb_process_flag_availability)
         ERROR_VARIABLE BB_EXECUTE_ERROR
         OUTPUT_QUIET
     )
+    file (REMOVE ${_BB_FILENAME})
 
     set(_BB_HAVE_FLAG OFF)
     if (${BB_EXECUTE_RESULT} EQUAL 0) # exitcode 0 - gcc success or
@@ -49,7 +51,7 @@ function(bb_process_flag_availability)
             set(_BB_HAVE_FLAG ON)
         endif()
     endif()
-    file (REMOVE ${_BB_FILENAME})
+
     if (${_BB_HAVE_FLAG})
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
@@ -107,6 +109,7 @@ function(bb_process_flag_availability)
         message(STATUS
             "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
     endif()
+
     file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
     execute_process(
         COMMAND iwyu ${CMAKE_C_FLAGS} ${BB_FLAG_LIST} ${_BB_FILENAME}
@@ -115,6 +118,7 @@ function(bb_process_flag_availability)
         ERROR_VARIABLE BB_EXECUTE_ERROR
         OUTPUT_QUIET
     )
+    file (REMOVE ${_BB_FILENAME})
 
     set(_BB_HAVE_FLAG OFF)
     if (${BB_EXECUTE_RESULT} EQUAL 2)
@@ -125,7 +129,7 @@ function(bb_process_flag_availability)
             set(_BB_HAVE_FLAG ON)
         endif()
     endif()
-    file (REMOVE ${_BB_FILENAME})
+
     if (${_BB_HAVE_FLAG})
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
