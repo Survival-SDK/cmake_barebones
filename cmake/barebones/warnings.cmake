@@ -5,6 +5,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION FANALYZER
     )
     bb_process_common_flag_availability(
+        FLAG -Wno-analyzer-possible-null-argument
+        FALLBACK ""
+        OPTION WNO_ANALYZER_POSSIBLE_NULL_ARGUMENT
+    )
+    bb_process_common_flag_availability(
         FLAG -Warc-maybe-repeated-use-of-weak
         FALLBACK ""
         OPTION WARC_MAYBE_REPEATED_USE_OF_WEAK
@@ -503,6 +508,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
     unset(_BB_WARNINGS)
     list(APPEND _BB_WARNINGS
         ${FANALYZER}
+        ${WNO_ANALYZER_POSSIBLE_NULL_ARGUMENT}
         ${WARC_MAYBE_REPEATED_USE_OF_WEAK}
         ${WARC_REPEATED_USE_OF_WEAK}
         ${WATTRIBUTE_ALIAS_2}
