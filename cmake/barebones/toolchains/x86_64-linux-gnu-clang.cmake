@@ -3,6 +3,7 @@ set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_C_FLAGS $ENV{CFLAGS} --target=x86_64-pc-linux-gnu)
+set(CMAKE_FIND_ROOT_PATH /usr/local/x86_64-linux-gnu)
 set(ENV{PKG_CONFIG_LIBDIR}
     "/usr/x86_64-linux-gnu/lib/pkgconfig:/usr/local/x86_64-linux-gnu/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig")
 set(CMAKE_TRY_COMPILE_TARGET_TYPE EXECUTABLE)
