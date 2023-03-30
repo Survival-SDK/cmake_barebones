@@ -39,11 +39,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         FALLBACK ""
         OPTION WBOOL_OPERATION
     )
-    bb_process_common_flag_availability(
-        FLAG -Wcast-align
-        FALLBACK ""
-        OPTION WCAST_ALIGN
-    )
+    # bb_process_common_flag_availability(
+    #     FLAG -Wcast-align
+    #     FALLBACK ""
+    #     OPTION WCAST_ALIGN
+    # )
     bb_process_common_flag_availability(
         FLAG -Wcast-qual
         FALLBACK ""
@@ -515,7 +515,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WBAD_FUNCTION_CAST}
         ${WBITWISE_OP_PARENTHESES}
         ${WBOOL_OPERATION}
-        ${WCAST_ALIGN}
+        # ${WCAST_ALIGN} # ARM-only
         ${WCAST_QUAL}
         ${WCOMMA}
         ${WCOMMENT}
