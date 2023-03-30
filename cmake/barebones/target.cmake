@@ -8,7 +8,8 @@ function(bb_add_library)
     set(options STATIC SHARED OBJECT)
     set(oneValueArgs OBJLIB)
 
-    cmake_parse_arguments(_BB_ADD_LIBRARY "${options}" "${oneValueArgs}" "" ${ARGN})
+    cmake_parse_arguments(_BB_ADD_LIBRARY "${options}" "${oneValueArgs}" ""
+        ${ARGN})
 
     list(GET _BB_ADD_LIBRARY_UNPARSED_ARGUMENTS 0 _TARGET)
     if (_BB_ADD_LIBRARY_STATIC)
@@ -28,7 +29,8 @@ function(bb_add_library)
     endforeach()
 
     if (_BB_ADD_LIBRARY_OBJLIB)
-        add_library(${_TARGET} ${_TYPE} $<TARGET_OBJECTS:${_BB_ADD_LIBRARY_OBJLIB}> ${_SOURCES})
+        add_library(${_TARGET} ${_TYPE}
+            $<TARGET_OBJECTS:${_BB_ADD_LIBRARY_OBJLIB}> ${_SOURCES})
     else()
         add_library(${_TARGET} ${_TYPE} ${_SOURCES})
     endif()
@@ -45,7 +47,8 @@ function(bb_add_library)
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
-        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE iwyu)
+        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
+            iwyu)
     endif()
 endfunction()
 
@@ -75,7 +78,8 @@ function(bb_add_executable)
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
-        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE iwyu)
+        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
+            iwyu)
     endif()
 endfunction()
 
@@ -120,7 +124,8 @@ function(bb_add_test _TARGET _SRC)
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
-        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE iwyu)
+        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
+            iwyu)
     endif()
     if (${CMAKE_BUILD_TYPE} STREQUAL Coverage)
         add_test(
