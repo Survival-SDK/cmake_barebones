@@ -49,7 +49,7 @@ function(bb_add_library)
     endif()
 endfunction()
 
-# bb_add_library(<target> [src1[ src2[ ...]]])
+# bb_add_executable(<target> [src1[ src2[ ...]]])
 function(bb_add_executable)
     list(GET ARGV 0 _TARGET)
 
