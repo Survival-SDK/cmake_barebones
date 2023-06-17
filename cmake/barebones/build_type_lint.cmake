@@ -4,6 +4,7 @@ set(BB_CLANG_TIDY_COMMON_CHECKS "\
 -*-uppercase-literal-suffix,\
 -altera-id-dependent-backward-branch,\
 -llvmlibc-restrict-system-libc-headers,\
+-misc-no-recursion,\
 ")
 
 set(BB_CLANG_TIDY_C_CHECKS "${BB_CLANG_TIDY_COMMON_CHECKS}\
