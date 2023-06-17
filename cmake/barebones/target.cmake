@@ -193,7 +193,7 @@ function(bb_set_c_std)
     get_target_property(_C_CLANG_TIDY ${_TARGET} C_CLANG_TIDY)
     if (NOT "${_C_CLANG_TIDY}" STREQUAL _C_CLANG_TIDY-NOTFOUND)
         set_target_properties(${_TARGET} PROPERTIES C_CLANG_TIDY
-            "${_C_CLANG_TIDY} --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
+            "${_C_CLANG_TIDY};--extra-arg=-std=${_STD_NAME}${_BB_SET_C_STD_STD}")
     endif()
 
     get_target_property(_C_INCLUDE_WHAT_YOU_USE ${_TARGET}
@@ -202,7 +202,7 @@ function(bb_set_c_std)
         _C_INCLUDE_WHAT_YOU_USE-NOTFOUND
     )
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE
-            "${_C_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
+            "${_C_INCLUDE_WHAT_YOU_USE};-std=${_STD_NAME}${_BB_SET_C_STD_STD}")
     endif()
 endfunction()
 
@@ -232,7 +232,7 @@ function(bb_set_cxx_std)
     get_target_property(_CXX_CLANG_TIDY ${_TARGET} CXX_CLANG_TIDY)
     if (NOT ${_CXX_CLANG_TIDY} STREQUAL _CXX_CLANG_TIDY-NOTFOUND)
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
-            "${_CXX_CLANG_TIDY} --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
+            "${_CXX_CLANG_TIDY};--extra-arg=-std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
     endif()
 
     get_target_property(_CXX_INCLUDE_WHAT_YOU_USE ${_TARGET}
@@ -241,6 +241,6 @@ function(bb_set_cxx_std)
         _CXX_INCLUDE_WHAT_YOU_USE-NOTFOUND
     )
         set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
-            "${_CXX_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
+            "${_CXX_INCLUDE_WHAT_YOU_USE};-std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
     endif()
 endfunction()
