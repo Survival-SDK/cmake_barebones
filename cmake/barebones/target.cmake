@@ -3,7 +3,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     check_ipo_supported(RESULT BB_HAVE_LTO)
 endif()
 
-# bb_add_library(<target> {STATIC|SHARED|OBJECT} [OBJLIB <objlib>] [src1[ src2[ ...]]])
+# bb_add_library(<target> {STATIC|SHARED|OBJECT} [OBJLIB <objlib>]
+# [src1[ src2[ ...]]])
 function(bb_add_library)
     set(options STATIC SHARED OBJECT)
     set(oneValueArgs OBJLIB)
@@ -135,7 +136,8 @@ function(bb_add_test _TARGET _SRC)
     endif()
 endfunction()
 
-# bb_add_coverage(<target> EXCLUDE <exclude1>[ exclude2[ ...]] DEPS <dep1>[ <dep2>[ ...]])
+# bb_add_coverage(<target> EXCLUDE <exclude1>[ exclude2[ ...]]
+# DEPS <dep1>[ <dep2>[ ...]])
 function(bb_add_coverage)
     if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Coverage)
         return()
