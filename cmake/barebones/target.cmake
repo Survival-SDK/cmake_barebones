@@ -35,6 +35,9 @@ function(bb_add_library)
     else()
         add_library(${_TARGET} ${_TYPE} ${_SOURCES})
     endif()
+    set_target_properties(${_TARGET} PROPERTIES
+        POSITION_INDEPENDENT_CODE 1
+    )
 
     if(BB_HAVE_LTO AND CMAKE_BUILD_TYPE STREQUAL "Release")
         set_target_properties(${_TARGET} PROPERTIES
@@ -66,6 +69,9 @@ function(bb_add_executable)
     endforeach()
 
     add_executable(${_TARGET} ${_SOURCES})
+    set_target_properties(${_TARGET} PROPERTIES
+        POSITION_INDEPENDENT_CODE 1
+    )
 
     if(BB_HAVE_LTO AND CMAKE_BUILD_TYPE STREQUAL "Release")
         set_target_properties(${_TARGET} PROPERTIES
