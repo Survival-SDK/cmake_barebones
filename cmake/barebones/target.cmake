@@ -160,3 +160,81 @@ function(bb_add_coverage)
         GENHTML_ARGS --branch-coverage
     )
 endfunction()
+
+# bb_set_c_std(<target> STD <std> EXTENSIONS)
+function(bb_set_c_std)
+    set(options EXTENSIONS)
+    set(oneValueArgs STD)
+
+    cmake_parse_arguments(_BB_SET_C_STD "${options}" "${oneValueArgs}" ""
+        ${ARGN})
+    list(GET _BB_SET_C_STD_UNPARSED_ARGUMENTS 0 _TARGET)
+
+    if (_BB_SET_C_STD_EXTENSIONS)
+        set(_EXT ON)
+        set(_STD_NAME gnu)
+    else()
+        set(_EXT OFF)
+        set(_STD_NAME c)
+    endif()
+
+    set_target_properties(${_TARGET} PROPERTIES
+        C_STANDARD ${_BB_SET_C_STD_STD}
+        C_EXTENSIONS ${_EXT}
+        POSITION_INDEPENDENT_CODE 1
+    )
+
+    get_target_property(_C_CLANG_TIDY ${_TARGET} C_CLANG_TIDY)
+    if (NOT "${_C_CLANG_TIDY}" STREQUAL _C_CLANG_TIDY-NOTFOUND)
+        set_target_properties(${_TARGET} PROPERTIES C_CLANG_TIDY
+            "${_C_CLANG_TIDY} --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
+    endif()
+
+    get_target_property(_C_INCLUDE_WHAT_YOU_USE ${_TARGET}
+        C_INCLUDE_WHAT_YOU_USE)
+    if (NOT ${_C_INCLUDE_WHAT_YOU_USE} STREQUAL
+        _C_INCLUDE_WHAT_YOU_USE-NOTFOUND
+    )
+        set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE
+            "${_C_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
+    endif()
+endfunction()
+
+# bb_set_cxx_std(<target> STD <std> EXTENSIONS)
+function(bb_set_cxx_std)
+    set(options EXTENSIONS)
+    set(oneValueArgs STD)
+
+    cmake_parse_arguments(_BB_SET_CXX_STD "${options}" "${oneValueArgs}" ""
+        ${ARGN})
+    list(GET _BB_SET_CXX_STD_UNPARSED_ARGUMENTS 0 _TARGET)
+
+    if (_BB_SET_CXX_STD_EXTENSIONS)
+        set(_EXT ON)
+        set(_STD_NAME gnu++)
+    else()
+        set(_EXT OFF)
+        set(_STD_NAME c++)
+    endif()
+
+    set_target_properties(${_TARGET} PROPERTIES
+        CXX_STANDARD ${_BB_SET_CXX_STD_STD}
+        CXX_EXTENSIONS ${_EXT}
+        POSITION_INDEPENDENT_CODE 1
+    )
+
+    get_target_property(_CXX_CLANG_TIDY ${_TARGET} CXX_CLANG_TIDY)
+    if (NOT ${_CXX_CLANG_TIDY} STREQUAL _CXX_CLANG_TIDY-NOTFOUND)
+        set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
+            "${_CXX_CLANG_TIDY} --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
+    endif()
+
+    get_target_property(_CXX_INCLUDE_WHAT_YOU_USE ${_TARGET}
+        CXX_INCLUDE_WHAT_YOU_USE)
+    if (NOT ${_CXX_INCLUDE_WHAT_YOU_USE} STREQUAL
+        _CXX_INCLUDE_WHAT_YOU_USE-NOTFOUND
+    )
+        set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
+            "${_CXX_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
+    endif()
+endfunction()
