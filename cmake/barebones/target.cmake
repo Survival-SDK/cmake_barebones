@@ -202,7 +202,7 @@ function(bb_set_c_std)
         _C_INCLUDE_WHAT_YOU_USE-NOTFOUND
     )
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE
-            "${_C_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
+            "${_C_INCLUDE_WHAT_YOU_USE} -Xiwyu --std=${_STD_NAME}${_BB_SET_C_STD_STD}")
     endif()
 endfunction()
 
@@ -241,6 +241,6 @@ function(bb_set_cxx_std)
         _CXX_INCLUDE_WHAT_YOU_USE-NOTFOUND
     )
         set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
-            "${_CXX_INCLUDE_WHAT_YOU_USE} --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
+            "${_CXX_INCLUDE_WHAT_YOU_USE} -Xiwyu --std=${_STD_NAME}${_BB_SET_CXX_STD_STD}")
     endif()
 endfunction()
