@@ -3,6 +3,7 @@ set(BB_CLANG_TIDY_COMMON_CHECKS "\
 -*-braces-around-statements,\
 -*-uppercase-literal-suffix,\
 -llvmlibc-restrict-system-libc-headers,\
+-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,\
 ")
 
 set(BB_CLANG_TIDY_C_CHECKS "${BB_CLANG_TIDY_COMMON_CHECKS}\
