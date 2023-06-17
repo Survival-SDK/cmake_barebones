@@ -2,6 +2,7 @@ set(BB_CLANG_TIDY_COMMON_CHECKS "\
 *,\
 -*-braces-around-statements,\
 -*-uppercase-literal-suffix,\
+-altera-id-dependent-backward-branch,\
 -llvmlibc-restrict-system-libc-headers,\
 ")
 
