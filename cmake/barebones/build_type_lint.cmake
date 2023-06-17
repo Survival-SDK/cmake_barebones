@@ -3,6 +3,7 @@ set(BB_CLANG_TIDY_COMMON_CHECKS "\
 -*-braces-around-statements,\
 -*-uppercase-literal-suffix,\
 -altera-id-dependent-backward-branch,\
+-bugprone-easily-swappable-parameters,\
 -llvmlibc-restrict-system-libc-headers,\
 -misc-no-recursion,\
 ")
