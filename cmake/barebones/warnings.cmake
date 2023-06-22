@@ -25,6 +25,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WBAD_FUNCTION_CAST
     )
     bb_process_common_flag_availability(
+        FLAG -Wbidi-chars=unpaired
+        FALLBACK ""
+        OPTION WBIDI_CHARS_UNPAIRED
+    )
+    bb_process_common_flag_availability(
         FLAG -Wbitwise-op-parentheses
         FALLBACK ""
         OPTION WBITWISE_OP_PARENTHESES
@@ -275,6 +280,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WREDUNDANT_PARENS
     )
     bb_process_common_flag_availability(
+        FLAG -Wreserved-identifier
+        FALLBACK ""
+        OPTION WRESERVED_IDENTIFIER
+    )
+    bb_process_common_flag_availability(
         FLAG -Wself-assign
         FALLBACK ""
         OPTION WSELF_ASSIGN
@@ -507,6 +517,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WARC_REPEATED_USE_OF_WEAK}
         ${WATTRIBUTE_ALIAS_2}
         ${WBAD_FUNCTION_CAST}
+        ${WBIDI_CHARS_UNPAIRED}
         ${WBITWISE_OP_PARENTHESES}
         ${WBOOL_OPERATION}
         # ${WCAST_ALIGN} # ARM-only
@@ -558,6 +569,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WPROFILE_INSTR_MISSING}
         ${WREDUNDANT_DECLS}
         ${WREDUNDANT_PARENS}
+        ${WRESERVED_IDENTIFIER}
         ${WSELF_ASSIGN}
         ${WSELF_ASSIGN_OVERLOADED}
         ${WSELF_MOVE}
