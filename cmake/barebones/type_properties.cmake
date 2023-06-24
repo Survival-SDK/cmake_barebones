@@ -81,7 +81,7 @@ endfunction()
 #   LANG {C|C++}
 #   TYPE <type>
 #   [HEADER <header>]
-#   SIZE <header>
+#   SIZE <size>
 #   [QUIET]
 # )
 function(bb_get_type_size)
