@@ -119,7 +119,7 @@ function(bb_get_type_size)
         }"
     )
     execute_process(
-        COMMAND ${_BB_COMPILER} ${CMAKE_C_FLAGS} -c ${_BB_FILENAME} -o test
+        COMMAND ${_BB_COMPILER} ${CMAKE_C_FLAGS} ${_BB_FILENAME} -o ${CMAKE_BINARY_DIR}/test
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         RESULT_VARIABLE BB_EXECUTE_RESULT
         OUTPUT_QUIET
@@ -128,21 +128,21 @@ function(bb_get_type_size)
 
     if (${BB_EXECUTE_RESULT} EQUAL 0)
         execute_process(
-            COMMAND test
+            COMMAND ${CMAKE_BINARY_DIR}/test
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            RESULT_VARIABLE BB_EXECUTE_RESULT
+            RESULT_VARIABLE BB_TYPE_SIZE
             OUTPUT_QUIET
         )
 
         if(NOT ${_BB_PROCESS_TYPE_SIZE_QUIET})
             message(STATUS
-                "Checking size of ${_BB_PROCESS_TYPE_SIZE_TYPE} - ${BB_EXECUTE_RESULT}")
+                "Checking size of ${_BB_PROCESS_TYPE_SIZE_TYPE} - ${BB_TYPE_SIZE}")
         endif()
-        set(${_BB_PROCESS_TYPE_SIZE_TYPE} ${BB_EXECUTE_RESULT} CACHE STRING "")
-        file (REMOVE test)
+        set(${_BB_PROCESS_TYPE_SIZE_SIZE} ${BB_TYPE_SIZE} CACHE STRING "")
+        file (REMOVE ${CMAKE_BINARY_DIR}/test)
         return()
     endif()
-    file (REMOVE test)
+    file (REMOVE ${CMAKE_BINARY_DIR}/test)
 
     if(NOT ${_BB_PROCESS_TYPE_SIZE_QUIET})
         message(STATUS
