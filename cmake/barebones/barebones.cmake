@@ -6,7 +6,7 @@ endif()
 
 include(barebones/options)
 include(barebones/flag_availability)
-include(barebones/type_availability)
+include(barebones/type_properties)
 include(barebones/compile_options)
 include(barebones/warnings)
 include(barebones/platform/windows)
