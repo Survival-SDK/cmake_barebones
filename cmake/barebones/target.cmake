@@ -50,6 +50,7 @@ function(bb_add_library)
             "clang-tidy;--checks=${BB_CLANG_TIDY_C_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
+    elseif (CMAKE_BUILD_TYPE STREQUAL "Iwyu")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
         set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
             iwyu)
@@ -84,6 +85,7 @@ function(bb_add_executable)
             "clang-tidy;--checks=${BB_CLANG_TIDY_C_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
+    elseif (CMAKE_BUILD_TYPE STREQUAL "Iwyu")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
         set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
             iwyu)
@@ -93,6 +95,7 @@ endfunction()
 function(bb_add_test _TARGET _SRC)
     if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Coverage
         AND NOT ${CMAKE_BUILD_TYPE} STREQUAL Lint
+        AND NOT ${CMAKE_BUILD_TYPE} STREQUAL Iwyu
     )
         return()
     endif()
@@ -130,6 +133,7 @@ function(bb_add_test _TARGET _SRC)
             "clang-tidy;--checks=${BB_CLANG_TIDY_C_CHECKS}")
         set_target_properties(${_TARGET} PROPERTIES CXX_CLANG_TIDY
             "clang-tidy;--checks=${BB_CLANG_TIDY_CXX_CHECKS}")
+    elseif (CMAKE_BUILD_TYPE STREQUAL "Iwyu")
         set_target_properties(${_TARGET} PROPERTIES C_INCLUDE_WHAT_YOU_USE iwyu)
         set_target_properties(${_TARGET} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE
             iwyu)

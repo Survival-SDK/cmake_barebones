@@ -57,9 +57,10 @@ function(bb_process_flag_availability)
             message(STATUS
                 "Checking for ${_BB_PROCESS_FLAG_AVAILABILITY_LANG} compiler accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
         endif()
-        if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Lint)
+        if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Lint AND NOT ${CMAKE_BUILD_TYPE} STREQUAL Iwyu)
             set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
                 CACHE STRING "")
+            return()
         endif()
     else()
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
@@ -71,79 +72,78 @@ function(bb_process_flag_availability)
         return()
     endif()
 
-    if (NOT ${CMAKE_BUILD_TYPE} STREQUAL Lint)
+    if (${CMAKE_BUILD_TYPE} STREQUAL Lint)
+        if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
+            message(STATUS
+                "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
+        endif()
+        file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
+        execute_process(
+            COMMAND clang-tidy ${_BB_FILENAME} -- ${CMAKE_C_FLAGS} ${BB_FLAG_LIST}
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            RESULT_VARIABLE BB_EXECUTE_RESULT
+            OUTPUT_QUIET
+            ERROR_QUIET
+        )
+        file (REMOVE ${_BB_FILENAME})
+        if (${BB_EXECUTE_RESULT} EQUAL 0)
+            if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
+                message(STATUS
+                    "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+            endif()
+            set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
+                CACHE STRING "")
+        else()
+            if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
+                message(STATUS
+                    "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+            endif()
+            set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
+                ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
+            return()
+        endif()
         return()
-    endif()
-
-    if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
-        message(STATUS
-            "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
-    endif()
-    file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
-    execute_process(
-        COMMAND clang-tidy ${_BB_FILENAME} -- ${CMAKE_C_FLAGS} ${BB_FLAG_LIST}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        RESULT_VARIABLE BB_EXECUTE_RESULT
-        OUTPUT_QUIET
-        ERROR_QUIET
-    )
-    file (REMOVE ${_BB_FILENAME})
-    if (${BB_EXECUTE_RESULT} EQUAL 0)
+    elseif (${CMAKE_BUILD_TYPE} STREQUAL Iwyu)
         if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
             message(STATUS
-                "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+                "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
         endif()
-        # set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
-        #     CACHE STRING "")
-    else()
-        if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
-            message(STATUS
-                "Checking for clang-tidy accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+
+        file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
+        execute_process(
+            COMMAND iwyu ${CMAKE_C_FLAGS} ${BB_FLAG_LIST} ${_BB_FILENAME}
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            RESULT_VARIABLE BB_EXECUTE_RESULT
+            ERROR_VARIABLE BB_EXECUTE_ERROR
+            OUTPUT_QUIET
+        )
+        file (REMOVE ${_BB_FILENAME})
+
+        set(_BB_HAVE_FLAG OFF)
+        if (${BB_EXECUTE_RESULT} EQUAL 2)
+            string(REGEX MATCH "warning: unknown warning option"
+                _REGEX_MATCH_UNSUPPORTED "${BB_EXECUTE_ERROR}")
+
+            if (NOT _REGEX_MATCH_UNSUPPORTED)
+                set(_BB_HAVE_FLAG ON)
+            endif()
         endif()
-        set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
-            ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
-        return()
-    endif()
 
-    if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
-        message(STATUS
-            "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG}")
-    endif()
-
-    file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
-    execute_process(
-        COMMAND iwyu ${CMAKE_C_FLAGS} ${BB_FLAG_LIST} ${_BB_FILENAME}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        RESULT_VARIABLE BB_EXECUTE_RESULT
-        ERROR_VARIABLE BB_EXECUTE_ERROR
-        OUTPUT_QUIET
-    )
-    file (REMOVE ${_BB_FILENAME})
-
-    set(_BB_HAVE_FLAG OFF)
-    if (${BB_EXECUTE_RESULT} EQUAL 2)
-        string(REGEX MATCH "warning: unknown warning option"
-            _REGEX_MATCH_UNSUPPORTED "${BB_EXECUTE_ERROR}")
-
-        if (NOT _REGEX_MATCH_UNSUPPORTED)
-            set(_BB_HAVE_FLAG ON)
+        if (${_BB_HAVE_FLAG})
+            if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
+                message(STATUS
+                    "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
+            endif()
+            set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
+                CACHE STRING "")
+        else()
+            if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
+                message(STATUS
+                    "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
+            endif()
+            set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
+                ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
         endif()
-    endif()
-
-    if (${_BB_HAVE_FLAG})
-        if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
-            message(STATUS
-                "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - yes")
-        endif()
-        set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION} ${BB_FLAG_LIST}
-            CACHE STRING "")
-    else()
-        if(NOT ${_BB_PROCESS_FLAG_AVAILABILITY_QUIET})
-            message(STATUS
-                "Checking for include-what-you-use accepts ${_BB_PROCESS_FLAG_AVAILABILITY_FLAG} - no")
-        endif()
-        set(${_BB_PROCESS_FLAG_AVAILABILITY_OPTION}
-            ${_BB_PROCESS_FLAG_AVAILABILITY_FALLBACK} CACHE STRING "")
     endif()
 endfunction()
 

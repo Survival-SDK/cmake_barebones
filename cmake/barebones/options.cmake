@@ -8,6 +8,6 @@ if(NOT DEFINED CMAKE_BUILD_TYPE AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Release" CACHE
         STRING "Choose the type of build." FORCE)
     set_property(CACHE CMAKE_BUILD_TYPE
-        PROPERTY STRINGS "Debug" "Release" "Lint"
+        PROPERTY STRINGS "Debug" "Release" "Lint" "Iwyu"
     )
 endif()

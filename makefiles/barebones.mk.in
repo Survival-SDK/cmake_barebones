@@ -60,6 +60,11 @@ bb_refresh_lint: $(BB_CMAKE_BUILD_DIR)
 	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Lint $(BB_CMAKE_DEBUG_OPTS) \
 	 $(BB_CMAKE_EXTRA_FLAGS)
 
+bb_refresh_iwyu: $(BB_CMAKE_BUILD_DIR)
+	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
+	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Iwyu $(BB_CMAKE_DEBUG_OPTS) \
+	 $(BB_CMAKE_EXTRA_FLAGS)
+
 bb_build:
 	cmake --build $(BB_CMAKE_BUILD_DIR) ${JOBS_OPT}
 
@@ -71,6 +76,8 @@ bb_build_coverage: bb_refresh_coverage bb_build
 	cd $(BB_CMAKE_BUILD_DIR); make $(BB_COVERAGE_TARGET)
 
 bb_build_lint: bb_refresh_lint bb_build
+
+bb_build_iwyu: bb_refresh_iwyu bb_build
 
 bb_clean:
 	-rm -r -f ./$(BB_CMAKE_BUILD_DIR)
