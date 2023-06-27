@@ -79,7 +79,7 @@ function(bb_process_flag_availability)
         endif()
         file(WRITE ${_BB_FILENAME} "int main(int argc, char **argv) {return 0;}")
         execute_process(
-            COMMAND clang-tidy ${_BB_FILENAME} -- ${CMAKE_C_FLAGS} ${BB_FLAG_LIST}
+            COMMAND clang-tidy ${_BB_FILENAME} -- ${CMAKE_C_FLAGS} ${BB_FLAG_LIST} -Werror=unknown-warning-option
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             RESULT_VARIABLE BB_EXECUTE_RESULT
             OUTPUT_QUIET
