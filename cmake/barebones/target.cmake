@@ -100,6 +100,16 @@ function(bb_add_test _TARGET _SRC)
         return()
     endif()
 
+    get_filename_component(_EXT ${_SRC} EXT)
+
+    if (_EXT STREQUAL .c)
+        if (NOT TARGET cmocka::cmocka)
+            return()
+        endif()
+    else()
+        # check for gtest
+    endif()
+
     add_executable(${_TARGET} ${_SRC})
     set_target_properties(${_TARGET} PROPERTIES
         C_STANDARD 99
@@ -107,11 +117,8 @@ function(bb_add_test _TARGET _SRC)
         POSITION_INDEPENDENT_CODE 1
     )
 
-    get_filename_component(_EXT ${_SRC} EXT)
-
     if (_EXT STREQUAL .c)
         target_compile_options(${_TARGET} PRIVATE ${BB_TEST_C_COMPILE_OPTIONS})
-        # set(_TEST_FRAMEWORK_INCLUDE_DIRS ${CMOCKA_INCLUDE_DIRS})
         set(_TEST_FRAMEWORK_LIBS cmocka::cmocka)
     else()
         target_compile_options(${_TARGET} PRIVATE
