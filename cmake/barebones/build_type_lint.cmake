@@ -3,9 +3,11 @@ set(BB_CLANG_TIDY_COMMON_CHECKS "\
 -*-braces-around-statements,\
 -*-uppercase-literal-suffix,\
 -altera-id-dependent-backward-branch,\
+-bugprone-branch-clone,\
 -bugprone-easily-swappable-parameters,\
 -llvmlibc-restrict-system-libc-headers,\
 -misc-no-recursion,\
+-misc-unused-parameters,\
 ")
 
 set(BB_CLANG_TIDY_C_CHECKS "${BB_CLANG_TIDY_COMMON_CHECKS}\
