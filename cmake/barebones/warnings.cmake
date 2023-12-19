@@ -94,11 +94,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         FALLBACK ""
         OPTION WDUPLICATE_DECL_SPECIFIER
     )
-    bb_process_common_flag_availability(
-        FLAG -Wduplicated-branches
-        FALLBACK ""
-        OPTION WDUPLICATED_BRANCHES
-    )
+    # bb_process_common_flag_availability(
+    #     FLAG -Wduplicated-branches
+    #     FALLBACK ""
+    #     OPTION WDUPLICATED_BRANCHES
+    # )
     bb_process_common_flag_availability(
         FLAG -Wduplicated-cond
         FALLBACK ""
@@ -531,7 +531,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WDANGLING_ELSE}
         ${WDEPRECATED}
         ${WDUPLICATE_DECL_SPECIFIER}
-        ${WDUPLICATED_BRANCHES}
+        # ${WDUPLICATED_BRANCHES} # causes false positives
         ${WDUPLICATED_COND}
         ${WEXTRA_SEMI_STMT}
         ${WFOR_LOOP_ANALYSIS}
