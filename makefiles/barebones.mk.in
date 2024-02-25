@@ -1,34 +1,34 @@
 BB_PREFIX=@BB_PREFIX@
 
 ifdef nowerror
-	WERROR_OPT=-DBB_WERROR=OFF
+	BB_WERROR_OPT=-DBB_WERROR=OFF
 else
-	WERROR_OPT=-DBB_WERROR=ON
+	BB_WERROR_OPT=-DBB_WERROR=ON
 endif
 
-BB_CMAKE_DEBUG_OPTS?=-DBB_MORE_WARNINGS=ON $(WERROR_OPT) \
+BB_CMAKE_DEBUG_OPTS?=-DBB_MORE_WARNINGS=ON $(BB_WERROR_OPT) \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
 ifdef devmode
 	BB_CMAKE_RELEASE_DEV_OPTS=$(BB_CMAKE_DEBUG_OPTS)
 endif
 ifdef onejob
-	JOBS_OPT=-j1
+	BB_JOBS_OPT=-j1
 else
-	JOBS_OPT=-j`nproc --all`
+	BB_JOBS_OPT=-j`nproc --all`
 endif
 ifndef toolchain
-	TOOLCHAIN_OPT=
+	BB_TOOLCHAIN_OPT=
 endif
 ifdef toolchain
 	ifneq ("$(wildcard $(BB_PREFIX)/lib/cmake/barebones/toolchains/$(toolchain).cmake)","")
-		TOOLCHAIN_OPT=-DCMAKE_TOOLCHAIN_FILE=$(BB_PREFIX)/lib/cmake/barebones/toolchains/$(toolchain).cmake
+		BB_TOOLCHAIN_OPT=-DCMAKE_TOOLCHAIN_FILE=$(BB_PREFIX)/lib/cmake/barebones/toolchains/$(toolchain).cmake
 	else
-		TOOLCHAIN_OPT=$(toolchain)
+		BB_TOOLCHAIN_OPT=$(toolchain)
 	endif
 endif
 ifdef prefix
-	INSTALL_PREFIX_OPT=-DCMAKE_INSTALL_PREFIX=$(prefix)
+	BB_INSTALL_PREFIX_OPT=-DCMAKE_INSTALL_PREFIX=$(prefix)
 endif
 
 BB_CMAKE_BUILD_DIR?=cmake_build
@@ -42,31 +42,32 @@ $(BB_CMAKE_BUILD_DIR):
 
 bb_refresh_release: $(BB_CMAKE_BUILD_DIR)
 	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
-	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Release $(BB_CMAKE_RELEASE_OPTS) \
-	 $(BB_CMAKE_RELEASE_DEV_OPTS) $(INSTALL_PREFIX_OPT) $(BB_CMAKE_EXTRA_FLAGS)
+	 $(BB_TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Release $(BB_CMAKE_RELEASE_OPTS) \
+	 $(BB_CMAKE_RELEASE_DEV_OPTS) $(BB_INSTALL_PREFIX_OPT) \
+	 $(BB_CMAKE_EXTRA_FLAGS)
 
 bb_refresh_debug: $(BB_CMAKE_BUILD_DIR)
 	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
-	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Debug $(BB_CMAKE_DEBUG_OPTS) \
-	 $(INSTALL_PREFIX_OPT) $(BB_CMAKE_EXTRA_FLAGS)
+	 $(BB_TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Debug $(BB_CMAKE_DEBUG_OPTS) \
+	 $(BB_INSTALL_PREFIX_OPT) $(BB_CMAKE_EXTRA_FLAGS)
 
 bb_refresh_coverage: $(BB_CMAKE_BUILD_DIR)
 	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
-	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Coverage $(BB_CMAKE_DEBUG_OPTS) \
+	 $(BB_TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Coverage $(BB_CMAKE_DEBUG_OPTS) \
 	 -DBB_COVERAGE_TARGET=$(BB_COVERAGE_TARGET) $(BB_CMAKE_EXTRA_FLAGS)
 
 bb_refresh_lint: $(BB_CMAKE_BUILD_DIR)
 	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
-	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Lint $(BB_CMAKE_DEBUG_OPTS) \
+	 $(BB_TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Lint $(BB_CMAKE_DEBUG_OPTS) \
 	 $(BB_CMAKE_EXTRA_FLAGS)
 
 bb_refresh_iwyu: $(BB_CMAKE_BUILD_DIR)
 	cd $(BB_CMAKE_BUILD_DIR); cmake .. -DBB_MODULE_PATH=$(BB_PREFIX)/lib/cmake \
-	 $(TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Iwyu $(BB_CMAKE_DEBUG_OPTS) \
+	 $(BB_TOOLCHAIN_OPT) -DCMAKE_BUILD_TYPE=Iwyu $(BB_CMAKE_DEBUG_OPTS) \
 	 $(BB_CMAKE_EXTRA_FLAGS)
 
 bb_build:
-	cmake --build $(BB_CMAKE_BUILD_DIR) ${JOBS_OPT}
+	cmake --build $(BB_CMAKE_BUILD_DIR) ${BB_JOBS_OPT}
 
 bb_build_release: bb_refresh_release bb_build
 
@@ -98,7 +99,7 @@ BB_CMAKELINT_FILTER = "-convention/filename, \
 
 bb_lint_build:
 	make bb_clean
-	cmakelint --filter=$(CMAKELINT_FILTER) \
+	cmakelint --filter=$(BB_CMAKELINT_FILTER) \
 	 `find . -type f \( -name "CMakeLists.txt" -or -name "*.cmake" \)`
 
 bb_install:
