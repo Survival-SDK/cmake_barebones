@@ -295,11 +295,6 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WSELF_ASSIGN_OVERLOADED
     )
     bb_process_common_flag_availability(
-        FLAG -Wself-move
-        FALLBACK ""
-        OPTION WSELF_MOVE
-    )
-    bb_process_common_flag_availability(
         FLAG -Wshadow-uncaptured-local
         FALLBACK ""
         OPTION WSHADOW_UNCAPTURED_LOCAL
@@ -1365,7 +1360,13 @@ endfunction()
 
 function(bb_add_more_warnings_cxx_basic COMPILE_OPTIONS)
     unset(_BB_WARNINGS)
+    bb_process_cxx_flag_availability(
+        FLAG -Wself-move
+        FALLBACK ""
+        OPTION WSELF_MOVE
+    )
     list(APPEND _BB_WARNINGS
+        ${WSELF_MOVE}
         -Wredundant-move
         -Wzero-as-null-pointer-constant
     )
