@@ -325,11 +325,6 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WSIGN_CONVERSION
     )
     bb_process_common_flag_availability(
-        FLAG -Wstrict-flex-arrays
-        FALLBACK ""
-        OPTION WSTRICT_FLEX_ARRAYS
-    )
-    bb_process_common_flag_availability(
         FLAG -Wstrict-overflow=4
         FALLBACK ""
         OPTION WSTRICT_OVERFLOW_4
@@ -574,7 +569,6 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WSHORTEN_64_TO_32}
         ${WSIGN_COMPARE}
         ${WSIGN_CONVERSION}
-        ${WSTRICT_FLEX_ARRAYS}
         ${WSTRICT_OVERFLOW_4}
         ${WSTRICT_PROTOTYPES}
         ${WSUGGEST_ATTRIBUTE_COLD}
