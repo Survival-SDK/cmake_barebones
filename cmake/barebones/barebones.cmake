@@ -4,6 +4,7 @@ if (NOT CMAKE_SYSTEM_NAME)
     set(CMAKE_SYSTEM_NAME ${CMAKE_HOST_SYSTEM_NAME})
 endif()
 
+include(barebones/host)
 include(barebones/options)
 include(barebones/flag_availability)
 include(barebones/header_availability)
