@@ -110,6 +110,11 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WEXTRA_SEMI_STMT
     )
     bb_process_common_flag_availability(
+        FLAG -Wflex-array-member-not-at-end
+        FALLBACK ""
+        OPTION WFLEX_ARRAY_MEMBER_NOT_AT_END
+    )
+    bb_process_common_flag_availability(
         FLAG -Wfor-loop-analysis
         FALLBACK ""
         OPTION WFOR_LOOP_ANALYSIS
@@ -524,6 +529,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         # ${WDUPLICATED_BRANCHES} # causes false positives
         ${WDUPLICATED_COND}
         ${WEXTRA_SEMI_STMT}
+        ${WFLEX_ARRAY_MEMBER_NOT_AT_END}
         ${WFOR_LOOP_ANALYSIS}
         ${WFOUR_CHAR_CONSTANTS}
         ${WFRAME_ADDRESS}
