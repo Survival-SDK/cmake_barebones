@@ -330,9 +330,9 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         OPTION WSIGN_CONVERSION
     )
     bb_process_common_flag_availability(
-        FLAG -Wstrict-overflow=4
+        FLAG -Wstrict-overflow=2
         FALLBACK ""
-        OPTION WSTRICT_OVERFLOW_4
+        OPTION WSTRICT_OVERFLOW_2
     )
     bb_process_common_flag_availability(
         FLAG -Wstrict-prototypes
@@ -575,7 +575,7 @@ function(bb_add_more_warnings_common_basic COMPILE_OPTIONS)
         ${WSHORTEN_64_TO_32}
         ${WSIGN_COMPARE}
         ${WSIGN_CONVERSION}
-        ${WSTRICT_OVERFLOW_4}
+        ${WSTRICT_OVERFLOW_2}
         ${WSTRICT_PROTOTYPES}
         ${WSUGGEST_ATTRIBUTE_COLD}
         ${WSUGGEST_ATTRIBUTE_CONST}
