@@ -1,5 +1,5 @@
 TODO: Readme
 
-CMake >= 3.11 required.
+CMake >= 3.13 required.
 
 License - CC0
